@@ -5,6 +5,10 @@ const modalBackdrop = document.getElementById("modalBackdrop");
 const modalContent = document.getElementById("modalContent");
 const modalClose = document.getElementById("modalClose");
 
+if (window.matchMedia("(max-width: 560px)").matches && !new URLSearchParams(window.location.search).has("desktop")) {
+  window.location.replace("mobile.html");
+}
+
 let toastTimer;
 
 function showToast(message) {
