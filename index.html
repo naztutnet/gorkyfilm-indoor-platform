@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#151719" />
+    <meta name="description" content="Локальный прототип сервиса навигации, бронирования павильонов и подготовки съёмок для Киностудии Горького." />
+    <title>Горький Навигатор — прототип</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Основная навигация">
+        <div class="brand-lockup">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="brand-copy"><strong>Горький</strong><small>производственный контур</small></span>
+        </div>
+
+        <nav class="main-nav">
+          <button class="nav-item is-active" data-view-target="today">
+            <span class="nav-icon" aria-hidden="true">⌂</span>
+            <span>Сегодня</span>
+          </button>
+          <button class="nav-item" data-view-target="navigation">
+            <span class="nav-icon" aria-hidden="true">↗</span>
+            <span>Навигация</span>
+          </button>
+          <button class="nav-item" data-view-target="booking">
+            <span class="nav-icon" aria-hidden="true">□</span>
+            <span>Павильоны</span>
+          </button>
+          <button class="nav-item" data-view-target="prep">
+            <span class="nav-icon" aria-hidden="true">✓</span>
+            <span>Подготовка</span>
+            <span class="nav-count" id="navPrepCount">4</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+
+        <div class="project-mini">
+          <span class="eyebrow">Активный проект</span>
+          <strong>Северный ветер</strong>
+          <span>Съёмка · 18 октября</span>
+          <div class="mini-progress"><span id="sidebarProgress"></span></div>
+        </div>
+
+        <button class="profile-button" id="profileButton" aria-label="Открыть профиль">
+          <span class="avatar">АП</span>
+          <span><strong>Анна Петрова</strong><small>линейный продюсер</small></span>
+          <span aria-hidden="true">•••</span>
+        </button>
+      </aside>
+
+      <main class="main-stage">
+        <header class="topbar">
+          <div>
+            <span class="context-label">Валдайский проезд, 16</span>
+            <span class="demo-badge">версия 02.09 · без плана здания</span>
+          </div>
+          <div class="top-actions">
+            <button class="icon-button" id="searchButton" aria-label="Поиск">⌕</button>
+            <button class="icon-button has-alert" id="notificationButton" aria-label="Уведомления">○</button>
+            <button class="primary small" data-view-target="booking">Запросить павильон</button>
+          </div>
+        </header>
+
+        <section class="view is-active" id="view-today" data-view="today" aria-labelledby="todayTitle">
+          <div class="view-intro dashboard-intro">
+            <div>
+              <span class="kicker">Проект / Северный ветер</span>
+              <h1 id="todayTitle">Съёмка начинается<br />до команды «мотор».</h1>
+            </div>
+            <p>Одна точка контроля для маршрута, павильона и всего пакета документов.</p>
+          </div>
+
+          <div class="production-strip" aria-label="Готовность проекта">
+            <div class="strip-time">
+              <span>До съёмки</span>
+              <strong id="daysToShoot">46 дней</strong>
+            </div>
+            <div class="strip-track">
+              <button class="strip-step is-done" data-view-target="booking">
+                <i></i><span><small>Площадка</small>Слот выбран</span>
+              </button>
+              <button class="strip-step is-current" data-view-target="prep">
+                <i></i><span><small>Документы</small><b id="stripDocs">5 из 9</b></span>
+              </button>
+              <button class="strip-step" data-view-target="navigation">
+                <i></i><span><small>Команда</small>Маршрут не отправлен</span>
+              </button>
+              <div class="track-line"><span id="trackProgress"></span></div>
+            </div>
+            <div class="readiness-score">
+              <span>Готовность</span>
+              <strong id="readinessScore">56%</strong>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="feature-card visual-card">
+              <img src="assets/pavilion-03.webp" alt="Съёмочный процесс в павильоне Киностудии Горького" />
+              <div class="photo-shade"></div>
+              <div class="visual-card-copy">
+                <span class="live-label"><i></i> Следующая точка</span>
+                <h2>Выбранный павильон</h2>
+                <p>Валдайский проезд, 16 → согласованный КПП → нужная дверь</p>
+                <button class="light-button" data-view-target="navigation">Открыть маршрут <span>↗</span></button>
+              </div>
+              <span class="image-credit">Фото: Киностудия Горького</span>
+            </article>
+
+            <article class="feature-card deadline-card">
+              <div class="card-head">
+                <span class="eyebrow">Радар сроков</span>
+                <span class="risk-pill">2 риска</span>
+              </div>
+              <h2>Не ждать последней недели</h2>
+              <div class="deadline-list">
+                <button class="deadline-item" data-view-target="prep">
+                  <span class="date-chip"><b>08</b> окт</span>
+                  <span><strong>Список съёмочной группы</strong><small>Нужен за 10 дней до съёмки</small></span>
+                  <span class="status-dot warning"></span>
+                </button>
+                <button class="deadline-item" data-view-target="prep">
+                  <span class="date-chip"><b>11</b> окт</span>
+                  <span><strong>Транспорт и разгрузка</strong><small>Нет госномеров двух машин</small></span>
+                  <span class="status-dot danger"></span>
+                </button>
+              </div>
+              <button class="text-button" data-view-target="prep">Проверить весь пакет <span>→</span></button>
+            </article>
+
+            <article class="compact-card booking-summary">
+              <div>
+                <span class="eyebrow">Павильон</span>
+                <h3>Большой трансформер</h3>
+                <p>17–19 октября · запрос сохранён</p>
+              </div>
+              <div class="booking-visual">
+                <span>17</span><i></i><span>19</span>
+              </div>
+              <button class="card-link" data-view-target="booking">Управлять датами</button>
+            </article>
+
+            <article class="compact-card assistant-summary">
+              <span class="assistant-orb" aria-hidden="true">✦</span>
+              <div>
+                <span class="eyebrow">Помощник</span>
+                <h3>Я собрал, что нужно досдать</h3>
+                <p>4 документа и 3 поля требуют внимания.</p>
+              </div>
+              <button class="card-link" data-view-target="prep">Посмотреть разбор</button>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-navigation" data-view="navigation" aria-labelledby="navigationTitle">
+          <div class="view-intro compact-intro">
+            <div>
+              <span class="kicker">Маршрут для команды</span>
+              <h1 id="navigationTitle">От КПП до двери.</h1>
+            </div>
+            <p>GPS снаружи, QR-якоря внутри. Без обещаний ложной точности.</p>
+          </div>
+
+          <div class="route-layout">
+            <aside class="route-panel">
+              <div class="route-selector">
+                <label for="routeDestination">Куда идём</label>
+                <select id="routeDestination">
+                  <option value="stage">Выбранный павильон · демо</option>
+                  <option value="makeup">Гримёрные · демо</option>
+                  <option value="cafe">Кафе · демо</option>
+                </select>
+              </div>
+
+              <a class="map-source-link" href="https://yandex.com/maps/org/kinostudiya_imeni_gorkogo/85763935842/?indoorLevel=1&amp;ll=37.467140%2C55.869698&amp;z=17" target="_blank" rel="noreferrer">Объект Киностудии Горького в Яндекс Картах <span>↗</span></a>
+
+              <div class="position-callout">
+                <span class="position-icon">◎</span>
+                <div><strong>Старт: КПП</strong><small>Позиция подтверждена QR</small></div>
+                <button id="rescanButton">Сканировать</button>
+              </div>
+
+              <div class="route-overview">
+                <div><span>Режим</span><strong>Пешком</strong></div>
+                <div><span>Шагов</span><strong id="routeStepCount">4</strong></div>
+                <div><span>Доступ</span><strong>Гость</strong></div>
+              </div>
+
+              <ol class="route-steps" id="routeSteps">
+                <li class="is-current"><i>1</i><span><strong>Прибыть по адресу</strong><small>Валдайский проезд, 16</small></span></li>
+                <li><i>2</i><span><strong>Пройти через свой КПП</strong><small>Точку укажут в приглашении</small></span></li>
+                <li><i>3</i><span><strong>Подтвердить вход по QR</strong><small>После согласования плана</small></span></li>
+                <li><i>4</i><span><strong>Дойти до павильона</strong><small>Маршрут добавит Киностудия</small></span></li>
+              </ol>
+
+              <button class="primary full" id="routeNextButton">Начать маршрут</button>
+              <button class="secondary full" id="shareRouteButton">Скопировать ссылку для команды</button>
+            </aside>
+
+            <div class="map-stage">
+              <div class="map-toolbar">
+                <span class="concept-tag">Сценарий пути · не геометрия здания</span>
+                <span class="plan-source">План Киностудии Горького: ожидается</span>
+              </div>
+              <svg class="floor-map" id="floorMap" viewBox="0 0 900 620" role="img" aria-label="Негеографический сценарий пути по комплексу Киностудии Горького">
+                <defs>
+                  <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+                    <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#d9ddd9" stroke-width="1" />
+                  </pattern>
+                </defs>
+                <rect width="900" height="620" fill="url(#grid)" />
+                <text class="map-watermark" x="450" y="126" text-anchor="middle">КИНОСТУДИЯ ГОРЬКОГО</text>
+                <text class="map-address" x="450" y="158" text-anchor="middle">ВАЛДАЙСКИЙ ПРОЕЗД, 16 · МОСКВА</text>
+                <g class="journey-cards">
+                  <rect x="80" y="245" width="160" height="130" rx="16" />
+                  <rect x="280" y="245" width="160" height="130" rx="16" />
+                  <rect x="480" y="245" width="160" height="130" rx="16" />
+                  <rect x="680" y="245" width="160" height="130" rx="16" />
+                </g>
+                <g class="journey-stage-numbers">
+                  <text x="102" y="277">01</text><text x="302" y="277">02</text><text x="502" y="277">03</text><text x="702" y="277">04</text>
+                </g>
+                <g class="journey-labels">
+                  <text x="102" y="320">АДРЕС</text><text x="102" y="344">Яндекс Карты</text>
+                  <text x="302" y="320">КПП</text><text x="302" y="344">из приглашения</text>
+                  <text x="502" y="320">ВХОД</text><text x="502" y="344">QR-якорь</text>
+                  <text x="702" y="320">ПАВИЛЬОН</text><text x="702" y="344">нужная дверь</text>
+                </g>
+                <polyline id="routePath" points="160,410 360,410 560,410 760,410" fill="none" stroke="#e33f34" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+                <g id="routeDots" fill="#fff" stroke="#e33f34" stroke-width="6">
+                  <circle cx="160" cy="410" r="13" />
+                  <circle cx="360" cy="410" r="13" />
+                  <circle cx="560" cy="410" r="13" />
+                  <circle cx="760" cy="410" r="13" />
+                </g>
+                <g id="currentPin" transform="translate(160 410)">
+                  <circle r="25" fill="#151719" />
+                  <circle r="8" fill="#fff" />
+                </g>
+                <text class="map-empty-note" x="450" y="510" text-anchor="middle">РЕАЛЬНЫЙ ПЛАН НЕ ЗАГРУЖЕН · ЧУЖИЕ КАРТЫ НЕ ИСПОЛЬЗУЮТСЯ</text>
+              </svg>
+              <div class="map-legend">
+                <span><i class="legend-line"></i> порядок шагов</span>
+                <span><i class="legend-qr"></i> будущий QR-якорь</span>
+                <span>Геометрия появится только из плана заказчика</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-booking" data-view="booking" aria-labelledby="bookingTitle">
+          <div class="view-intro compact-intro">
+            <div>
+              <span class="kicker">Каталог площадок</span>
+              <h1 id="bookingTitle">Павильон под задачу.</h1>
+            </div>
+            <p>Проверка дат, технических требований и готовности документов — в одном запросе.</p>
+          </div>
+
+          <div class="booking-grid">
+            <div class="pavilion-catalog">
+              <div class="catalog-toolbar">
+                <div class="filter-pills" role="group" aria-label="Фильтр павильонов">
+                  <button class="is-active" data-pavilion-filter="all">Все</button>
+                  <button data-pavilion-filter="transformer">Трансформеры</button>
+                  <button data-pavilion-filter="virtual">Виртуальный</button>
+                </div>
+                <span>Демонстрационный каталог</span>
+              </div>
+
+              <div class="pavilion-list" id="pavilionList">
+                <button class="pavilion-card is-selected" data-pavilion="Большой трансформер" data-type="transformer">
+                  <img src="assets/pavilion-03.webp" alt="Декорация и съёмочная камера в павильоне" />
+                  <span class="photo-credit">Фото: Киностудия Горького</span>
+                  <span class="availability available">Есть окна</span>
+                  <span class="pavilion-card-copy"><small>Демонстрационная категория</small><strong>Большой трансформер</strong><em>Декорации · массовка · сложный свет</em></span>
+                </button>
+                <button class="pavilion-card" data-pavilion="Виртуальная студия" data-type="virtual">
+                  <img src="assets/pavilion-02.webp" alt="Виртуальная студия с большим LED-экраном" />
+                  <span class="photo-credit">Фото: Киностудия Горького</span>
+                  <span class="availability limited">По согласованию</span>
+                  <span class="pavilion-card-copy"><small>Виртуальная студия · демо</small><strong>LED-сцена</strong><em>Virtual production · previsualization</em></span>
+                </button>
+                <button class="pavilion-card" data-pavilion="Средний трансформер" data-type="transformer">
+                  <img src="assets/pavilion-01.webp" alt="Монитор на съёмочной площадке" />
+                  <span class="photo-credit">Фото: Киностудия Горького</span>
+                  <span class="availability available">Есть окна</span>
+                  <span class="pavilion-card-copy"><small>Демонстрационная категория</small><strong>Средний трансформер</strong><em>Предметная сцена · хромакей · диалоги</em></span>
+                </button>
+              </div>
+            </div>
+
+            <aside class="booking-builder">
+              <div class="builder-head">
+                <span class="eyebrow">Запрос на бронирование</span>
+                <h2 id="selectedPavilionName">Большой трансформер</h2>
+                <p>Выберите предполагаемые даты. Студия подтвердит слот после проверки задачи.</p>
+              </div>
+              <div class="calendar-head">
+                <button id="previousMonth" aria-label="Предыдущий месяц">←</button>
+                <strong id="calendarMonth">Октябрь 2026</strong>
+                <button id="nextMonth" aria-label="Следующий месяц">→</button>
+              </div>
+              <div class="calendar-weekdays"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+              <div class="calendar-grid" id="calendarGrid"></div>
+              <div class="calendar-legend"><span><i class="free"></i> свободно</span><span><i class="busy"></i> занято</span><span><i class="selected"></i> выбрано</span></div>
+
+              <div class="booking-result" id="bookingResult">
+                <div><span>Даты</span><strong id="selectedDatesText">Выберите даты</strong></div>
+                <div><span>Расчёт</span><strong>После уточнения задачи</strong></div>
+              </div>
+              <button class="primary full" id="bookingRequestButton" disabled>Сформировать запрос</button>
+              <p class="privacy-note">Это локальный прототип: запрос никуда не отправляется.</p>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-prep" data-view="prep" aria-labelledby="prepTitle">
+          <div class="view-intro compact-intro">
+            <div>
+              <span class="kicker">Пакет съёмки / Северный ветер</span>
+              <h1 id="prepTitle">Правильно. Полностью. В срок.</h1>
+            </div>
+            <p>Помощник превращает требования студии в понятные задачи для каждого участника.</p>
+          </div>
+
+          <div class="prep-layout">
+            <div class="prep-main">
+              <div class="prep-scorecard">
+                <div class="score-ring" id="scoreRing"><span id="prepScore">56%</span><small>готово</small></div>
+                <div class="score-copy">
+                  <span class="eyebrow">Контроль комплекта</span>
+                  <h2>До передачи на проверку — 4 шага</h2>
+                  <p id="prepSummary">5 из 9 требований закрыты или находятся на проверке.</p>
+                </div>
+                <button class="secondary" id="packageButton">Собрать пакет</button>
+              </div>
+
+              <div class="checklist-toolbar">
+                <div class="filter-pills" role="group" aria-label="Фильтр документов">
+                  <button class="is-active" data-doc-filter="all">Все</button>
+                  <button data-doc-filter="todo">Нужно сделать</button>
+                  <button data-doc-filter="review">На проверке</button>
+                  <button data-doc-filter="done">Готово</button>
+                </div>
+                <button class="text-button" id="addRequirementButton">+ Добавить требование</button>
+              </div>
+
+              <div class="requirement-list" id="requirementList">
+                <article class="requirement-row" data-doc-status="done">
+                  <button class="status-check is-done" aria-label="Изменить статус"></button>
+                  <div class="requirement-copy"><span class="category">Договор</span><strong>Заявка на аренду павильона</strong><small>Версия 3 · обновлено сегодня</small></div>
+                  <span class="owner-chip">АП</span><span class="date-status done">Готово</span><button class="row-menu" aria-label="Меню требования">•••</button>
+                </article>
+                <article class="requirement-row" data-doc-status="done">
+                  <button class="status-check is-done" aria-label="Изменить статус"></button>
+                  <div class="requirement-copy"><span class="category">Проект</span><strong>Сценарная заявка и синопсис</strong><small>PDF · 14 страниц</small></div>
+                  <span class="owner-chip">МК</span><span class="date-status done">Готово</span><button class="row-menu" aria-label="Меню требования">•••</button>
+                </article>
+                <article class="requirement-row" data-doc-status="review">
+                  <button class="status-check is-review" aria-label="Изменить статус"></button>
+                  <div class="requirement-copy"><span class="category">Техника</span><strong>Технический райдер</strong><small>Есть замечание по электропитанию</small></div>
+                  <span class="owner-chip">ДС</span><span class="date-status review">На проверке</span><button class="row-menu" aria-label="Меню требования">•••</button>
+                </article>
+                <article class="requirement-row" data-doc-status="review">
+                  <button class="status-check is-review" aria-label="Изменить статус"></button>
+                  <div class="requirement-copy"><span class="category">Безопасность</span><strong>План работ в павильоне</strong><small>Проверяется службой площадки</small></div>
+                  <span class="owner-chip">ИВ</span><span class="date-status review">На проверке</span><button class="row-menu" aria-label="Меню требования">•••</button>
+                </article>
+                <article class="requirement-row" data-doc-status="done">
+                  <button class="status-check is-done" aria-label="Изменить статус"></button>
+                  <div class="requirement-copy"><span class="category">Юридическое</span><strong>Страховые документы</strong><small>Действуют до 31 декабря</small></div>
+                  <span class="owner-chip">АП</span><span class="date-status done">Готово</span><button class="row-menu" aria-label="Меню требования">•••</button>
+                </article>
+                <article class="requirement-row" data-doc-status="todo">
+                  <button class="status-check" aria-label="Изменить статус"></button>
+                  <div class="requirement-copy"><span class="category">Доступ</span><strong>Список съёмочной группы</strong><small>Нужны паспортные данные 12 участников</small></div>
+                  <span class="owner-chip">ЕЛ</span><span class="date-status urgent">До 8 окт</span><button class="row-menu" aria-label="Меню требования">•••</button>
+                </article>
+                <article class="requirement-row" data-doc-status="todo">
+                  <button class="status-check" aria-label="Изменить статус"></button>
+                  <div class="requirement-copy"><span class="category">Транспорт</span><strong>Список машин и окно разгрузки</strong><small>Не хватает двух госномеров</small></div>
+                  <span class="owner-chip">ЕЛ</span><span class="date-status urgent">До 11 окт</span><button class="row-menu" aria-label="Меню требования">•••</button>
+                </article>
+                <article class="requirement-row" data-doc-status="todo">
+                  <button class="status-check" aria-label="Изменить статус"></button>
+                  <div class="requirement-copy"><span class="category">Команда</span><strong>Инструктаж и правила площадки</strong><small>Не подтверждено 8 участниками</small></div>
+                  <span class="owner-chip">АП</span><span class="date-status">До 15 окт</span><button class="row-menu" aria-label="Меню требования">•••</button>
+                </article>
+                <article class="requirement-row" data-doc-status="todo">
+                  <button class="status-check" aria-label="Изменить статус"></button>
+                  <div class="requirement-copy"><span class="category">Маршрут</span><strong>Ссылка для съёмочной группы</strong><small>КПП → павильон → гримёрные</small></div>
+                  <span class="owner-chip">АП</span><span class="date-status">До 16 окт</span><button class="row-menu" aria-label="Меню требования">•••</button>
+                </article>
+              </div>
+            </div>
+
+            <aside class="prep-assistant">
+              <div class="assistant-head">
+                <span class="assistant-orb large" aria-hidden="true">✦</span>
+                <div><span class="eyebrow">Помощник подготовки</span><h2>Что проверить?</h2></div>
+              </div>
+              <p class="assistant-lead">Сверяю пакет со сроками съёмки и требованиями площадки.</p>
+              <div class="assistant-prompts">
+                <button data-assistant-query="risk">Что сейчас под угрозой?</button>
+                <button data-assistant-query="missing">Каких данных не хватает?</button>
+                <button data-assistant-query="plan">Составь план до съёмки</button>
+              </div>
+              <div class="assistant-answer" id="assistantAnswer">
+                <span>Последняя проверка · сейчас</span>
+                <p>Два ближайших риска: список группы и номера транспорта. Начните с них — они влияют на доступ на площадку.</p>
+              </div>
+              <div class="assistant-input">
+                <input id="assistantInput" type="text" placeholder="Спросите о подготовке…" aria-label="Вопрос помощнику" />
+                <button id="assistantSend" aria-label="Отправить вопрос">↑</button>
+              </div>
+              <p class="privacy-note">Ответы в прототипе формируются локально по демонстрационному чек-листу.</p>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <nav class="mobile-nav" aria-label="Мобильная навигация">
+      <button class="is-active" data-view-target="today"><span>⌂</span>Сегодня</button>
+      <button data-view-target="navigation"><span>↗</span>Маршрут</button>
+      <button data-view-target="booking"><span>□</span>Павильоны</button>
+      <button data-view-target="prep"><span>✓</span>Подготовка</button>
+    </nav>
+
+    <div class="modal-backdrop" id="modalBackdrop" hidden>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal-close" id="modalClose" aria-label="Закрыть">×</button>
+        <div id="modalContent"></div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
