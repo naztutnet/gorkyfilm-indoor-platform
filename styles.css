@@ -8,9 +8,9 @@
   --signal: #3264d8;
   --success: #2e7459;
   --warning: #b47717;
-  --display: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
-  --body: Inter, Arial, sans-serif;
-  --utility: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --display: Helvetica, "Helvetica Neue", Arial, sans-serif;
+  --body: Helvetica, "Helvetica Neue", Arial, sans-serif;
+  --utility: Helvetica, "Helvetica Neue", Arial, sans-serif;
   --radius: 18px;
   --shadow: 0 20px 48px rgba(18, 22, 24, 0.11);
 }
