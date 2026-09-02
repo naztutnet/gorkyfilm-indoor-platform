@@ -259,6 +259,7 @@ button:focus-visible, input:focus-visible, select:focus-visible {
 .map-controls button:hover { color: white; background: var(--ink); }
 .map-controls span { color: var(--muted); font-size: 9px; text-align: center; }
 .floor-map { width: 100%; height: 100%; min-height: 620px; display: block; }
+.mobile-floor-map { display: none; }
 #mapViewport { transform-box: fill-box; transform-origin: center; transition: transform .25s ease; }
 .map-watermark { fill: #202426; font: 800 30px var(--display); letter-spacing: -.025em; }
 .map-address { fill: #6d7475; font: 9px var(--utility); letter-spacing: .1em; }
@@ -292,6 +293,28 @@ button:focus-visible, input:focus-visible, select:focus-visible {
 .legend-qr { width: 10px; height: 10px; border: 2px solid var(--rec); border-radius: 50%; }
 .legend-room { width: 12px; height: 9px; border: 1px solid #aab2ad; background: #eef0ec; }
 #currentPin { transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+.mobile-map-bg { fill: #e9ece8; }
+.mobile-building-shell { fill: #f8f9f5; stroke: #181c1e; stroke-width: 5; }
+.mobile-corridor { fill: #dfe4df; stroke: #c3cac5; stroke-width: 2; }
+.mobile-map-title { fill: #202426; font: 800 17px var(--display); }
+.mobile-map-subtitle { fill: #717976; font: 7px var(--utility); letter-spacing: .06em; }
+.mobile-map-rooms rect { fill: #eef0ec; stroke: #c4cbc6; stroke-width: 2; }
+.mobile-map-rooms rect:nth-child(1), .mobile-map-rooms rect:nth-child(2) { fill: #e7eae6; }
+.mobile-room-labels { fill: #252a2c; font: 800 9px var(--display); }
+.mobile-room-meta { fill: #858c89; font: 6px var(--utility); letter-spacing: .05em; }
+.mobile-entry { fill: #202426; }
+.mobile-entry-label { fill: white; font: 800 10px var(--display); letter-spacing: .04em; }
+.mobile-corridor-label { fill: #89918e; font: 700 7px var(--utility); letter-spacing: .08em; }
+.mobile-route-path { fill: none; stroke: var(--rec); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+.mobile-route-dots { fill: white; stroke: var(--rec); stroke-width: 5; }
+.mobile-qr-anchor rect { fill: white; stroke: var(--rec); stroke-width: 3; }
+.mobile-qr-anchor path { fill: var(--rec); }
+.mobile-current-pin .mobile-pin-pulse { fill: rgba(227,63,52,.2); }
+.mobile-current-pin .mobile-pin-core { fill: #171a1c; stroke: white; stroke-width: 3; }
+.mobile-current-pin .mobile-pin-dot { fill: var(--rec); }
+.mobile-you-are-here rect { fill: #171a1c; }
+.mobile-you-are-here text { fill: white; font: 800 8px var(--utility); letter-spacing: .08em; }
+#mobileCurrentPin { transition: transform .5s cubic-bezier(.2,.8,.2,1); }
 
 .booking-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) 380px; gap: 20px; align-items: start; }
 .catalog-toolbar { min-height: 52px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
@@ -430,6 +453,8 @@ button:focus-visible, input:focus-visible, select:focus-visible {
   .readiness-score { grid-column: 2; grid-row: 1; }
   .dashboard-grid, .booking-grid, .route-layout { grid-template-columns: 1fr; }
   .visual-card, .map-preview-card, .deadline-card { grid-column: auto; }
+  .map-stage { order: -1; }
+  .route-panel { order: 2; }
   .booking-builder { position: static; order: -1; }
   .map-stage { min-height: 470px; }
   .floor-map { min-height: 470px; }
@@ -442,8 +467,15 @@ button:focus-visible, input:focus-visible, select:focus-visible {
 }
 
 @media (max-width: 560px) {
+  .topbar { padding: 0 14px; }
+  .context-label { font-size: 9px; }
   .dashboard-grid { display: block; }
   .feature-card, .compact-card { margin-bottom: 13px; }
+  .map-preview-card { min-height: 0; padding: 17px; }
+  .preview-map { min-height: 185px; }
+  .preview-map-foot { align-items: flex-end; }
+  .preview-map-foot > div span { max-width: 150px; line-height: 1.35; }
+  .preview-map-foot .light-button { min-height: 44px; white-space: nowrap; }
   .visual-card-copy { min-height: 310px; padding: 25px; }
   .visual-card-copy h2 { font-size: 34px; }
   .production-strip { margin-left: -8px; margin-right: -8px; }
@@ -453,14 +485,17 @@ button:focus-visible, input:focus-visible, select:focus-visible {
   .pavilion-list { grid-template-columns: 1fr; }
   .pavilion-card:first-child { grid-column: auto; }
   .catalog-toolbar { align-items: flex-start; flex-direction: column; padding-bottom: 13px; }
-  .map-toolbar { inset: 12px 12px auto; }
-  .map-identity { max-width: 190px; }
-  .map-controls { grid-template-columns: 30px 43px 30px; }
-  .map-controls button { width: 30px; }
-  .map-legend { inset: auto 12px 12px; gap: 9px; }
+  .map-stage { min-height: 0; overflow: visible; }
+  .map-toolbar { display: none; }
+  .floor-map { display: none; }
+  .mobile-floor-map { width: 100%; height: auto; display: block; }
+  .map-legend { position: static; margin: 0; border-width: 1px 0 0; border-radius: 0; gap: 10px 14px; }
   .map-legend strong { width: 100%; margin-left: 0; }
   .preview-map-head > span:last-child { display: none; }
   .route-panel { padding: 19px; }
+  .route-selector select, .route-panel .primary, .route-panel .secondary { min-height: 46px; }
+  .position-callout { grid-template-columns: 35px 1fr; }
+  .position-callout button { grid-column: 2; justify-self: start; min-height: 30px; }
   .prep-scorecard { grid-template-columns: 80px 1fr; padding: 20px; }
   .score-ring { width: 78px; height: 78px; }
   .prep-scorecard .secondary { grid-column: 1 / -1; }

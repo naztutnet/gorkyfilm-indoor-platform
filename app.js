@@ -67,6 +67,8 @@ const routeData = {
     count: 4,
     points: [[150,370],[305,370],[465,370],[607,235]],
     path: "150,370 305,370 465,370 607,288 607,235",
+    mobilePoints: [[180,466],[180,400],[180,266],[278,154]],
+    mobilePath: "180,466 180,400 180,266 278,154",
     steps: [
       ["Прибыть по адресу", "Валдайский проезд, 16"],
       ["Войти через КПП", "Старт маршрута на карте"],
@@ -78,6 +80,8 @@ const routeData = {
     count: 4,
     points: [[150,370],[305,370],[465,370],[607,513]],
     path: "150,370 305,370 465,370 607,370 607,452 607,513",
+    mobilePoints: [[180,466],[180,400],[180,266],[82,378]],
+    mobilePath: "180,466 180,400 180,266 180,378 82,378",
     steps: [
       ["Прибыть по адресу", "Валдайский проезд, 16"],
       ["Войти через КПП", "Старт маршрута на карте"],
@@ -89,6 +93,8 @@ const routeData = {
     count: 4,
     points: [[150,370],[305,370],[465,370],[776,513]],
     path: "150,370 305,370 465,370 776,370 776,452 776,513",
+    mobilePoints: [[180,466],[180,400],[180,266],[278,378]],
+    mobilePath: "180,466 180,400 180,266 180,378 278,378",
     steps: [
       ["Прибыть по адресу", "Валдайский проезд, 16"],
       ["Войти через КПП", "Старт маршрута на карте"],
@@ -103,6 +109,9 @@ let currentRouteStep = -1;
 const routePath = document.getElementById("routePath");
 const routeDots = document.getElementById("routeDots");
 const currentPin = document.getElementById("currentPin");
+const mobileRoutePath = document.getElementById("mobileRoutePath");
+const mobileRouteDots = document.getElementById("mobileRouteDots");
+const mobileCurrentPin = document.getElementById("mobileCurrentPin");
 const routeSteps = document.getElementById("routeSteps");
 const routeNextButton = document.getElementById("routeNextButton");
 
@@ -113,10 +122,13 @@ function renderRoute(key) {
   document.getElementById("routeStepCount").textContent = route.count;
   routePath.setAttribute("points", route.path);
   routeDots.innerHTML = route.points.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13" />`).join("");
+  mobileRoutePath.setAttribute("points", route.mobilePath);
+  mobileRouteDots.innerHTML = route.mobilePoints.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="10" />`).join("");
   routeSteps.innerHTML = route.steps.map((step, index) => `
     <li class="${index === 0 ? "is-current" : ""}"><i>${index + 1}</i><span><strong>${step[0]}</strong><small>${step[1]}</small></span></li>
   `).join("");
   currentPin.setAttribute("transform", `translate(${route.points[0][0]} ${route.points[0][1]})`);
+  mobileCurrentPin.setAttribute("transform", `translate(${route.mobilePoints[0][0]} ${route.mobilePoints[0][1]})`);
   routeNextButton.textContent = "Начать маршрут";
 }
 
@@ -136,7 +148,9 @@ routeNextButton.addEventListener("click", () => {
     item.classList.toggle("is-current", index === currentRouteStep);
   });
   const point = route.points[Math.min(currentRouteStep, route.points.length - 1)];
+  const mobilePoint = route.mobilePoints[Math.min(currentRouteStep, route.mobilePoints.length - 1)];
   currentPin.setAttribute("transform", `translate(${point[0]} ${point[1]})`);
+  mobileCurrentPin.setAttribute("transform", `translate(${mobilePoint[0]} ${mobilePoint[1]})`);
   routeNextButton.textContent = currentRouteStep === route.steps.length - 1 ? "Маршрут завершён · начать заново" : "Следующий шаг";
   if (currentRouteStep === route.steps.length - 1) showToast("Вы у цели. Точка подтверждена.");
 });

@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#151719" />
     <meta name="description" content="Локальный прототип сервиса навигации, бронирования павильонов и подготовки съёмок для Киностудии Горького." />
     <title>Горький Навигатор — прототип</title>
-    <link rel="stylesheet" href="styles.css?v=indoor-map-1" />
+    <link rel="stylesheet" href="styles.css?v=mobile-map-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -309,6 +309,56 @@
                   </g>
                 </g>
               </svg>
+              <svg class="mobile-floor-map" id="mobileFloorMap" viewBox="0 0 360 560" role="img" aria-label="Мобильная демонстрационная indoor-карта комплекса Киностудии Горького">
+                <rect class="mobile-map-bg" width="360" height="560" />
+                <text class="mobile-map-title" x="24" y="37">КИНОСТУДИЯ ГОРЬКОГО</text>
+                <text class="mobile-map-subtitle" x="24" y="57">ВАЛДАЙСКИЙ ПРОЕЗД, 16 · ДЕМО-СХЕМА</text>
+                <rect class="mobile-building-shell" x="18" y="78" width="324" height="430" rx="22" />
+                <rect class="mobile-corridor" x="139" y="112" width="82" height="328" rx="10" />
+
+                <g class="mobile-map-rooms">
+                  <rect x="34" y="102" width="96" height="105" rx="9" />
+                  <rect x="230" y="102" width="96" height="105" rx="9" />
+                  <rect x="34" y="224" width="96" height="93" rx="9" />
+                  <rect x="230" y="224" width="96" height="93" rx="9" />
+                  <rect x="34" y="334" width="96" height="88" rx="9" />
+                  <rect x="230" y="334" width="96" height="88" rx="9" />
+                </g>
+                <g class="mobile-room-labels">
+                  <text x="51" y="143">ПАВ 01</text><text x="247" y="143">ПАВ 03</text>
+                  <text x="51" y="261">РЕКВИЗИТ</text><text x="247" y="261">АППАРАТНАЯ</text>
+                  <text x="51" y="371">ГРИМЁРНЫЕ</text><text x="247" y="371">КАФЕ</text>
+                </g>
+                <g class="mobile-room-meta">
+                  <text x="51" y="162">СЪЁМОЧНЫЙ</text><text x="247" y="162">СЪЁМОЧНЫЙ</text>
+                  <text x="51" y="280">ХРАНЕНИЕ</text><text x="247" y="280">ТЕХНИКА</text>
+                  <text x="51" y="390">КОМАНДА</text><text x="247" y="390">ОТДЫХ</text>
+                </g>
+                <rect class="mobile-entry" x="113" y="441" width="134" height="51" rx="12" />
+                <text class="mobile-entry-label" x="180" y="472" text-anchor="middle">КПП · ВХОД</text>
+                <text class="mobile-corridor-label" x="180" y="297" text-anchor="middle" transform="rotate(-90 180 297)">ГЛАВНАЯ ГАЛЕРЕЯ</text>
+
+                <polyline id="mobileRoutePath" class="mobile-route-path" points="180,466 180,400 180,266 278,154" />
+                <g id="mobileRouteDots" class="mobile-route-dots">
+                  <circle cx="180" cy="466" r="10" />
+                  <circle cx="180" cy="400" r="10" />
+                  <circle cx="180" cy="266" r="10" />
+                  <circle cx="278" cy="154" r="10" />
+                </g>
+                <g class="mobile-qr-anchor" transform="translate(180 400)">
+                  <rect x="-13" y="-13" width="26" height="26" rx="5" />
+                  <path d="M-6-6h5v5h-5zm8 0h5v5H2zm-8 8h5v5h-5zm8 1h3v3H2z" />
+                </g>
+                <g id="mobileCurrentPin" class="mobile-current-pin" transform="translate(180 466)">
+                  <circle class="mobile-pin-pulse" r="25" />
+                  <circle class="mobile-pin-core" r="17" />
+                  <circle class="mobile-pin-dot" r="6" />
+                </g>
+                <g class="mobile-you-are-here" transform="translate(119 513)">
+                  <rect width="122" height="29" rx="14" />
+                  <text x="61" y="19" text-anchor="middle">ВЫ ЗДЕСЬ</text>
+                </g>
+              </svg>
               <div class="map-legend">
                 <span><i class="legend-line"></i> активный маршрут</span>
                 <span><i class="legend-qr"></i> QR-якорь</span>
@@ -508,6 +558,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="app.js?v=indoor-map-1"></script>
+    <script src="app.js?v=mobile-map-1"></script>
   </body>
 </html>
