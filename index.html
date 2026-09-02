@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#151719" />
     <meta name="description" content="Локальный прототип сервиса навигации, бронирования павильонов и подготовки съёмок для Киностудии Горького." />
     <title>Горький Навигатор — прототип</title>
-    <link rel="stylesheet" href="styles.css?v=helvetica-1" />
+    <link rel="stylesheet" href="styles.css?v=indoor-map-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -68,10 +68,10 @@
         <section class="view is-active" id="view-today" data-view="today" aria-labelledby="todayTitle">
           <div class="view-intro dashboard-intro">
             <div>
-              <span class="kicker">Проект / Северный ветер</span>
-              <h1 id="todayTitle">Съёмка начинается<br />до команды «мотор»</h1>
+              <span class="kicker">Indoor-помощник / Киностудия Горького</span>
+              <h1 id="todayTitle">От въезда<br />до нужной двери</h1>
             </div>
-            <p>Одна точка контроля для маршрута, павильона и всего пакета документов.</p>
+            <p>Карта комплекса, маршрут команды, запрос павильона и готовность документов в одном сервисе.</p>
           </div>
 
           <div class="production-strip" aria-label="Готовность проекта">
@@ -98,16 +98,40 @@
           </div>
 
           <div class="dashboard-grid">
-            <article class="feature-card visual-card">
-              <img src="assets/pavilion-03.webp" alt="Съёмочный процесс в павильоне Киностудии Горького" />
-              <div class="photo-shade"></div>
-              <div class="visual-card-copy">
-                <span class="live-label"><i></i> Следующая точка</span>
-                <h2>Выбранный павильон</h2>
-                <p>Валдайский проезд, 16 → согласованный КПП → нужная дверь</p>
-                <button class="light-button" data-view-target="navigation">Открыть маршрут <span>↗</span></button>
+            <article class="feature-card map-preview-card">
+              <div class="preview-map-head">
+                <span class="live-label"><i></i> Indoor-маршрут активен</span>
+                <span>Валдайский проезд, 16</span>
               </div>
-              <span class="image-credit">Фото: Киностудия Горького</span>
+              <svg class="preview-map" viewBox="0 0 760 340" role="img" aria-label="Превью демонстрационной indoor-карты Киностудии Горького">
+                <rect class="preview-shell" x="34" y="35" width="692" height="255" rx="20" />
+                <g class="preview-rooms">
+                  <rect x="190" y="58" width="120" height="82" rx="8" />
+                  <rect x="322" y="58" width="120" height="82" rx="8" />
+                  <rect x="454" y="58" width="120" height="82" rx="8" />
+                  <rect x="586" y="58" width="116" height="82" rx="8" />
+                  <rect x="190" y="202" width="120" height="64" rx="8" />
+                  <rect x="322" y="202" width="120" height="64" rx="8" />
+                  <rect x="454" y="202" width="120" height="64" rx="8" />
+                  <rect x="586" y="202" width="116" height="64" rx="8" />
+                </g>
+                <g class="preview-room-labels">
+                  <text x="210" y="92">ПАВ 01</text><text x="342" y="92">ПАВ 02</text>
+                  <text x="474" y="92">ПАВ 03</text><text x="606" y="92">ПАВ 04</text>
+                  <text x="210" y="239">РЕКВИЗИТ</text><text x="342" y="239">АППАРАТНАЯ</text>
+                  <text x="474" y="239">ГРИМЁРНЫЕ</text><text x="606" y="239">КАФЕ</text>
+                </g>
+                <rect class="preview-entry" x="58" y="126" width="102" height="82" rx="10" />
+                <text class="preview-entry-label" x="82" y="174">КПП</text>
+                <polyline class="preview-route" points="110,168 250,168 382,168 514,168 514,140" />
+                <g class="preview-route-dots"><circle cx="110" cy="168" r="9" /><circle cx="250" cy="168" r="9" /><circle cx="382" cy="168" r="9" /><circle cx="514" cy="168" r="9" /></g>
+                <g class="preview-pin" transform="translate(110 168)"><circle r="18" /><circle r="6" /></g>
+                <text class="preview-destination" x="477" y="122">МАРШРУТ</text>
+              </svg>
+              <div class="preview-map-foot">
+                <div><strong>До павильона</strong><span>4 точки · QR-позиционирование</span></div>
+                <button class="light-button" data-view-target="navigation">Открыть карту <span>↗</span></button>
+              </div>
             </article>
 
             <article class="feature-card deadline-card">
@@ -202,50 +226,94 @@
 
             <div class="map-stage">
               <div class="map-toolbar">
-                <span class="concept-tag">Сценарий пути · не геометрия здания</span>
-                <span class="plan-source">План Киностудии Горького: ожидается</span>
+                <div class="map-identity">
+                  <span class="concept-tag">Indoor-карта · демо-слой</span>
+                  <span class="plan-source">Комплекс Горького · 10 павильонов</span>
+                </div>
+                <div class="map-controls" aria-label="Масштаб карты">
+                  <button id="mapZoomOut" aria-label="Уменьшить карту">−</button>
+                  <span id="mapZoomLabel">100%</span>
+                  <button id="mapZoomIn" aria-label="Увеличить карту">+</button>
+                </div>
               </div>
-              <svg class="floor-map" id="floorMap" viewBox="0 0 900 620" role="img" aria-label="Негеографический сценарий пути по комплексу Киностудии Горького">
+              <svg class="floor-map" id="floorMap" viewBox="0 0 960 700" role="img" aria-label="Демонстрационная indoor-карта комплекса Киностудии Горького">
                 <defs>
-                  <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
-                    <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#d9ddd9" stroke-width="1" />
+                  <pattern id="mapGrid" width="28" height="28" patternUnits="userSpaceOnUse">
+                    <path d="M 28 0 L 0 0 0 28" fill="none" stroke="#dce0dc" stroke-width="1" />
                   </pattern>
+                  <filter id="mapShadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#111719" flood-opacity=".12" />
+                  </filter>
                 </defs>
-                <rect width="900" height="620" fill="url(#grid)" />
-                <text class="map-watermark" x="450" y="126" text-anchor="middle">КИНОСТУДИЯ ГОРЬКОГО</text>
-                <text class="map-address" x="450" y="158" text-anchor="middle">ВАЛДАЙСКИЙ ПРОЕЗД, 16 · МОСКВА</text>
-                <g class="journey-cards">
-                  <rect x="80" y="245" width="160" height="130" rx="16" />
-                  <rect x="280" y="245" width="160" height="130" rx="16" />
-                  <rect x="480" y="245" width="160" height="130" rx="16" />
-                  <rect x="680" y="245" width="160" height="130" rx="16" />
+                <rect width="960" height="700" fill="url(#mapGrid)" />
+                <g id="mapViewport">
+                  <text class="map-watermark" x="480" y="91" text-anchor="middle">КИНОСТУДИЯ ГОРЬКОГО</text>
+                  <text class="map-address" x="480" y="119" text-anchor="middle">ВАЛДАЙСКИЙ ПРОЕЗД, 16 · ДЕМО-СХЕМА ИНТЕРФЕЙСА</text>
+                  <rect class="building-shell" x="70" y="145" width="820" height="455" rx="26" />
+                  <rect class="main-corridor" x="218" y="314" width="600" height="112" rx="12" />
+                  <rect class="entry-zone" x="88" y="286" width="130" height="168" rx="14" />
+                  <text class="room-label room-label-large" x="119" y="355">КПП</text>
+                  <text class="room-meta" x="119" y="380">ВХОД</text>
+
+                  <g class="map-rooms stage-rooms">
+                    <rect x="244" y="170" width="134" height="118" rx="10" />
+                    <rect x="392" y="170" width="134" height="118" rx="10" />
+                    <rect x="540" y="170" width="134" height="118" rx="10" />
+                    <rect x="688" y="170" width="176" height="118" rx="10" />
+                  </g>
+                  <g class="room-labels">
+                    <text x="269" y="218">ПАВ 01</text><text x="417" y="218">ПАВ 02</text>
+                    <text x="565" y="218">ПАВ 03</text><text x="713" y="218">ПАВ 04</text>
+                  </g>
+                  <g class="room-capacities">
+                    <text x="269" y="242">СЪЁМОЧНЫЙ</text><text x="417" y="242">СЪЁМОЧНЫЙ</text>
+                    <text x="565" y="242">СЪЁМОЧНЫЙ</text><text x="713" y="242">ТРАНСФОРМЕР</text>
+                  </g>
+
+                  <g class="map-rooms service-rooms">
+                    <rect x="244" y="452" width="134" height="122" rx="10" />
+                    <rect x="392" y="452" width="134" height="122" rx="10" />
+                    <rect x="540" y="452" width="134" height="122" rx="10" />
+                    <rect x="688" y="452" width="176" height="122" rx="10" />
+                  </g>
+                  <g class="room-labels service-labels">
+                    <text x="269" y="503">РЕКВИЗИТ</text><text x="417" y="503">АППАРАТНАЯ</text>
+                    <text x="565" y="503">ГРИМЁРНЫЕ</text><text x="713" y="503">КАФЕ</text>
+                  </g>
+                  <g class="room-capacities">
+                    <text x="269" y="527">ХРАНЕНИЕ</text><text x="417" y="527">ТЕХНИКА</text>
+                    <text x="565" y="527">КОМАНДА</text><text x="713" y="527">ОТДЫХ</text>
+                  </g>
+
+                  <text class="corridor-label" x="474" y="381" text-anchor="middle">ГЛАВНАЯ ГАЛЕРЕЯ</text>
+                  <polyline id="routePath" points="150,370 305,370 465,370 607,288 607,235" fill="none" stroke="#e33f34" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+                  <g id="routeDots" class="route-dots">
+                    <circle cx="150" cy="370" r="13" />
+                    <circle cx="305" cy="370" r="13" />
+                    <circle cx="465" cy="370" r="13" />
+                    <circle cx="607" cy="235" r="13" />
+                  </g>
+                  <g class="qr-anchor" transform="translate(305 370)"><rect x="-15" y="-15" width="30" height="30" rx="5" /><path d="M-7-7h6v6h-6zm10 0h6v6H3zm-10 10h6v6h-6zm10 1h3v3H3z" /></g>
+                  <g id="currentPin" class="current-pin" transform="translate(150 370)">
+                    <circle class="pin-pulse" r="31" />
+                    <circle class="pin-core" r="21" />
+                    <circle class="pin-dot" r="7" />
+                  </g>
+                  <g class="you-are-here" transform="translate(92 252)">
+                    <rect width="118" height="31" rx="15" />
+                    <text x="59" y="20" text-anchor="middle">ВЫ ЗДЕСЬ</text>
+                  </g>
+                  <g class="destination-label" transform="translate(548 133)">
+                    <rect width="119" height="29" rx="14" />
+                    <text x="59.5" y="19" text-anchor="middle">НАЗНАЧЕНИЕ</text>
+                  </g>
                 </g>
-                <g class="journey-stage-numbers">
-                  <text x="102" y="277">01</text><text x="302" y="277">02</text><text x="502" y="277">03</text><text x="702" y="277">04</text>
-                </g>
-                <g class="journey-labels">
-                  <text x="102" y="320">АДРЕС</text><text x="102" y="344">Яндекс Карты</text>
-                  <text x="302" y="320">КПП</text><text x="302" y="344">из приглашения</text>
-                  <text x="502" y="320">ВХОД</text><text x="502" y="344">QR-якорь</text>
-                  <text x="702" y="320">ПАВИЛЬОН</text><text x="702" y="344">нужная дверь</text>
-                </g>
-                <polyline id="routePath" points="160,410 360,410 560,410 760,410" fill="none" stroke="#e33f34" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
-                <g id="routeDots" fill="#fff" stroke="#e33f34" stroke-width="6">
-                  <circle cx="160" cy="410" r="13" />
-                  <circle cx="360" cy="410" r="13" />
-                  <circle cx="560" cy="410" r="13" />
-                  <circle cx="760" cy="410" r="13" />
-                </g>
-                <g id="currentPin" transform="translate(160 410)">
-                  <circle r="25" fill="#151719" />
-                  <circle r="8" fill="#fff" />
-                </g>
-                <text class="map-empty-note" x="450" y="510" text-anchor="middle">РЕАЛЬНЫЙ ПЛАН НЕ ЗАГРУЖЕН · ЧУЖИЕ КАРТЫ НЕ ИСПОЛЬЗУЮТСЯ</text>
               </svg>
               <div class="map-legend">
-                <span><i class="legend-line"></i> порядок шагов</span>
-                <span><i class="legend-qr"></i> будущий QR-якорь</span>
-                <span>Геометрия появится только из плана заказчика</span>
+                <span><i class="legend-line"></i> активный маршрут</span>
+                <span><i class="legend-qr"></i> QR-якорь</span>
+                <span><i class="legend-room"></i> помещение</span>
+                <strong>Геометрия демонстрационная · заменяется утверждённым планом</strong>
               </div>
             </div>
           </div>
@@ -440,6 +508,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=indoor-map-1"></script>
   </body>
 </html>

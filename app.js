@@ -65,33 +65,35 @@ document.getElementById("profileButton").addEventListener("click", () => showToa
 const routeData = {
   stage: {
     count: 4,
-    points: [[160,410],[360,410],[560,410],[760,410]],
-    path: "160,410 360,410 560,410 760,410",
+    points: [[150,370],[305,370],[465,370],[607,235]],
+    path: "150,370 305,370 465,370 607,288 607,235",
     steps: [
       ["Прибыть по адресу", "Валдайский проезд, 16"],
-      ["Пройти через свой КПП", "Точку укажут в приглашении"],
-      ["Подтвердить вход по QR", "После согласования плана"],
-      ["Дойти до павильона", "Маршрут добавит Киностудия"]
+      ["Войти через КПП", "Старт маршрута на карте"],
+      ["Подтвердить позицию", "QR-якорь в главной галерее"],
+      ["Дойти до павильона", "Назначение отмечено красным"]
     ]
   },
   makeup: {
-    count: 3,
-    points: [[160,410],[460,410],[760,410]],
-    path: "160,410 460,410 760,410",
+    count: 4,
+    points: [[150,370],[305,370],[465,370],[607,513]],
+    path: "150,370 305,370 465,370 607,370 607,452 607,513",
     steps: [
       ["Прибыть по адресу", "Валдайский проезд, 16"],
-      ["Пройти через назначенный вход", "Точку уточнит студия"],
-      ["Дойти до гримёрных", "После загрузки реального плана"]
+      ["Войти через КПП", "Старт маршрута на карте"],
+      ["Пройти главную галерею", "Ориентируйтесь по QR-точкам"],
+      ["Дойти до гримёрных", "Назначение отмечено красным"]
     ]
   },
   cafe: {
-    count: 3,
-    points: [[160,410],[460,410],[760,410]],
-    path: "160,410 460,410 760,410",
+    count: 4,
+    points: [[150,370],[305,370],[465,370],[776,513]],
+    path: "150,370 305,370 465,370 776,370 776,452 776,513",
     steps: [
       ["Прибыть по адресу", "Валдайский проезд, 16"],
-      ["Пройти через назначенный вход", "По правилам площадки"],
-      ["Дойти до кафе", "После загрузки реального плана"]
+      ["Войти через КПП", "Старт маршрута на карте"],
+      ["Пройти главную галерею", "Ориентируйтесь по QR-точкам"],
+      ["Дойти до кафе", "Назначение отмечено красным"]
     ]
   }
 };
@@ -99,6 +101,7 @@ const routeData = {
 let currentRoute = "stage";
 let currentRouteStep = -1;
 const routePath = document.getElementById("routePath");
+const routeDots = document.getElementById("routeDots");
 const currentPin = document.getElementById("currentPin");
 const routeSteps = document.getElementById("routeSteps");
 const routeNextButton = document.getElementById("routeNextButton");
@@ -109,6 +112,7 @@ function renderRoute(key) {
   const route = routeData[key];
   document.getElementById("routeStepCount").textContent = route.count;
   routePath.setAttribute("points", route.path);
+  routeDots.innerHTML = route.points.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13" />`).join("");
   routeSteps.innerHTML = route.steps.map((step, index) => `
     <li class="${index === 0 ? "is-current" : ""}"><i>${index + 1}</i><span><strong>${step[0]}</strong><small>${step[1]}</small></span></li>
   `).join("");
@@ -146,6 +150,19 @@ document.getElementById("shareRouteButton").addEventListener("click", async () =
     showToast("Ссылка: demo.gorky.local/route/approved-destination");
   }
 });
+
+let mapZoom = 1;
+const mapViewport = document.getElementById("mapViewport");
+const mapZoomLabel = document.getElementById("mapZoomLabel");
+
+function setMapZoom(nextZoom) {
+  mapZoom = Math.min(1.3, Math.max(0.8, nextZoom));
+  mapViewport.style.transform = `scale(${mapZoom})`;
+  mapZoomLabel.textContent = `${Math.round(mapZoom * 100)}%`;
+}
+
+document.getElementById("mapZoomIn").addEventListener("click", () => setMapZoom(mapZoom + 0.1));
+document.getElementById("mapZoomOut").addEventListener("click", () => setMapZoom(mapZoom - 0.1));
 
 document.getElementById("rescanButton").addEventListener("click", () => {
   const cells = Array.from({ length: 49 }, (_, index) => `<i style="opacity:${[0,1,2,6,7,8,12,14,16,20,21,22,24,26,28,30,32,34,36,40,42,43,44,48].includes(index) ? 1 : 0}"></i>`).join("");
