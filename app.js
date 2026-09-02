@@ -17,10 +17,14 @@ function showToast(message) {
 function switchView(name) {
   views.forEach((view) => view.classList.toggle("is-active", view.dataset.view === name));
   viewButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.viewTarget === name));
+  document.body.dataset.activeView = name;
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 viewButtons.forEach((button) => button.addEventListener("click", () => switchView(button.dataset.viewTarget)));
+
+if (window.matchMedia("(max-width: 560px)").matches) switchView("navigation");
+else document.body.dataset.activeView = "today";
 
 function openModal(markup) {
   modalContent.innerHTML = markup;
@@ -64,11 +68,12 @@ document.getElementById("profileButton").addEventListener("click", () => showToa
 // Navigation prototype
 const routeData = {
   stage: {
+    title: "Павильон 03",
     count: 4,
     points: [[150,370],[305,370],[465,370],[607,235]],
     path: "150,370 305,370 465,370 607,288 607,235",
-    mobilePoints: [[180,466],[180,400],[180,266],[278,154]],
-    mobilePath: "180,466 180,400 180,266 278,154",
+    mobilePoints: [[195,566],[195,508],[195,396],[256,226]],
+    mobilePath: "195,566 195,508 195,396 195,309 256,309 256,226",
     steps: [
       ["Прибыть по адресу", "Валдайский проезд, 16"],
       ["Войти через КПП", "Старт маршрута на карте"],
@@ -77,11 +82,12 @@ const routeData = {
     ]
   },
   makeup: {
+    title: "Гримёрные",
     count: 4,
     points: [[150,370],[305,370],[465,370],[607,513]],
     path: "150,370 305,370 465,370 607,370 607,452 607,513",
-    mobilePoints: [[180,466],[180,400],[180,266],[82,378]],
-    mobilePath: "180,466 180,400 180,266 180,378 82,378",
+    mobilePoints: [[195,566],[195,508],[195,396],[96,448]],
+    mobilePath: "195,566 195,508 195,396 139,396 139,448 96,448",
     steps: [
       ["Прибыть по адресу", "Валдайский проезд, 16"],
       ["Войти через КПП", "Старт маршрута на карте"],
@@ -90,11 +96,12 @@ const routeData = {
     ]
   },
   cafe: {
+    title: "Кафе",
     count: 4,
     points: [[150,370],[305,370],[465,370],[776,513]],
     path: "150,370 305,370 465,370 776,370 776,452 776,513",
-    mobilePoints: [[180,466],[180,400],[180,266],[278,378]],
-    mobilePath: "180,466 180,400 180,266 180,378 278,378",
+    mobilePoints: [[195,566],[195,508],[195,396],[286,432]],
+    mobilePath: "195,566 195,508 195,396 248,396 248,432 286,432",
     steps: [
       ["Прибыть по адресу", "Валдайский проезд, 16"],
       ["Войти через КПП", "Старт маршрута на карте"],
@@ -112,6 +119,7 @@ const currentPin = document.getElementById("currentPin");
 const mobileRoutePath = document.getElementById("mobileRoutePath");
 const mobileRouteDots = document.getElementById("mobileRouteDots");
 const mobileCurrentPin = document.getElementById("mobileCurrentPin");
+const mobileDestinationPin = document.getElementById("mobileDestinationPin");
 const routeSteps = document.getElementById("routeSteps");
 const routeNextButton = document.getElementById("routeNextButton");
 
@@ -124,11 +132,14 @@ function renderRoute(key) {
   routeDots.innerHTML = route.points.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13" />`).join("");
   mobileRoutePath.setAttribute("points", route.mobilePath);
   mobileRouteDots.innerHTML = route.mobilePoints.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="10" />`).join("");
+  document.getElementById("mobileDestinationTitle").textContent = route.title;
   routeSteps.innerHTML = route.steps.map((step, index) => `
     <li class="${index === 0 ? "is-current" : ""}"><i>${index + 1}</i><span><strong>${step[0]}</strong><small>${step[1]}</small></span></li>
   `).join("");
   currentPin.setAttribute("transform", `translate(${route.points[0][0]} ${route.points[0][1]})`);
   mobileCurrentPin.setAttribute("transform", `translate(${route.mobilePoints[0][0]} ${route.mobilePoints[0][1]})`);
+  const destination = route.mobilePoints[route.mobilePoints.length - 1];
+  mobileDestinationPin.setAttribute("transform", `translate(${destination[0]} ${destination[1]})`);
   routeNextButton.textContent = "Начать маршрут";
 }
 
@@ -177,6 +188,18 @@ function setMapZoom(nextZoom) {
 
 document.getElementById("mapZoomIn").addEventListener("click", () => setMapZoom(mapZoom + 0.1));
 document.getElementById("mapZoomOut").addEventListener("click", () => setMapZoom(mapZoom - 0.1));
+
+document.getElementById("mobileLocateButton").addEventListener("click", () => {
+  renderRoute(currentRoute);
+  showToast("Позиция обновлена по ближайшему QR-якорю");
+});
+
+document.getElementById("mobileDestinationButton").addEventListener("click", () => {
+  document.querySelector(".route-panel").scrollIntoView({ behavior: "smooth", block: "start" });
+  document.getElementById("routeDestination").focus({ preventScroll: true });
+});
+
+document.getElementById("mobileFloorButton").addEventListener("click", () => showToast("В демо доступен первый этаж"));
 
 document.getElementById("rescanButton").addEventListener("click", () => {
   const cells = Array.from({ length: 49 }, (_, index) => `<i style="opacity:${[0,1,2,6,7,8,12,14,16,20,21,22,24,26,28,30,32,34,36,40,42,43,44,48].includes(index) ? 1 : 0}"></i>`).join("");

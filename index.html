@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#151719" />
     <meta name="description" content="Локальный прототип сервиса навигации, бронирования павильонов и подготовки съёмок для Киностудии Горького." />
     <title>Горький Навигатор — прототип</title>
-    <link rel="stylesheet" href="styles.css?v=mobile-map-1" />
+    <link rel="stylesheet" href="styles.css?v=realistic-mobile-map-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -309,54 +309,80 @@
                   </g>
                 </g>
               </svg>
-              <svg class="mobile-floor-map" id="mobileFloorMap" viewBox="0 0 360 560" role="img" aria-label="Мобильная демонстрационная indoor-карта комплекса Киностудии Горького">
-                <rect class="mobile-map-bg" width="360" height="560" />
-                <text class="mobile-map-title" x="24" y="37">КИНОСТУДИЯ ГОРЬКОГО</text>
-                <text class="mobile-map-subtitle" x="24" y="57">ВАЛДАЙСКИЙ ПРОЕЗД, 16 · ДЕМО-СХЕМА</text>
-                <rect class="mobile-building-shell" x="18" y="78" width="324" height="430" rx="22" />
-                <rect class="mobile-corridor" x="139" y="112" width="82" height="328" rx="10" />
+              <div class="mobile-map-ui">
+                <div class="mobile-map-search">
+                  <span class="mobile-search-icon" aria-hidden="true">⌕</span>
+                  <button class="mobile-destination-trigger" id="mobileDestinationButton"><small>Куда идём</small><strong id="mobileDestinationTitle">Павильон 03</strong></button>
+                  <button data-view-target="today" aria-label="Закрыть карту">×</button>
+                </div>
+                <button class="mobile-floor-chip" id="mobileFloorButton" aria-label="Выбрать этаж"><span>1</span> этаж <b>⌄</b></button>
+              </div>
+              <button class="mobile-locate-button" id="mobileLocateButton" aria-label="Показать моё местоположение">◎</button>
+              <svg class="mobile-floor-map" id="mobileFloorMap" viewBox="0 0 390 620" role="img" aria-label="Мобильная демонстрационная indoor-карта комплекса Киностудии Горького">
+                <rect class="mobile-map-bg" width="390" height="620" />
+                <path class="mobile-road" d="M-30 67L420 7L430 76L-20 136Z" />
+                <path class="mobile-sidewalk" d="M-20 143L424 84" />
+                <text class="mobile-road-label" x="202" y="72" text-anchor="middle" transform="rotate(-8 202 72)">ВАЛДАЙСКИЙ ПРОЕЗД</text>
+                <g class="mobile-trees">
+                  <circle cx="29" cy="178" r="10" /><circle cx="357" cy="161" r="12" />
+                  <circle cx="29" cy="405" r="12" /><circle cx="358" cy="468" r="10" />
+                </g>
+                <text class="mobile-demo-label" x="24" y="116">ДЕМО-КАРТА · УРОВЕНЬ 1</text>
+
+                <path class="mobile-building-shadow" d="M47 147H342V484H307V557H113V518H47Z" />
+                <path class="mobile-building-shell" d="M41 140H336V477H301V550H107V511H41Z" />
 
                 <g class="mobile-map-rooms">
-                  <rect x="34" y="102" width="96" height="105" rx="9" />
-                  <rect x="230" y="102" width="96" height="105" rx="9" />
-                  <rect x="34" y="224" width="96" height="93" rx="9" />
-                  <rect x="230" y="224" width="96" height="93" rx="9" />
-                  <rect x="34" y="334" width="96" height="88" rx="9" />
-                  <rect x="230" y="334" width="96" height="88" rx="9" />
+                  <path d="M54 153H176V286H54Z" />
+                  <path d="M189 153H323V286H189Z" />
+                  <path d="M54 299H139V387H54Z" />
+                  <path d="M54 400H139V498H54Z" />
+                  <path d="M248 299H323V387H248Z" />
+                  <path d="M248 400H323V464H248Z" />
+                  <path d="M120 477H190V537H120Z" />
+                  <path d="M203 477H288V537H203Z" />
                 </g>
+                <path class="mobile-corridor" d="M139 299H248V464H301V477H203V537H190V477H139Z" />
+                <path class="mobile-cross-corridor" d="M176 260H189V299H323V318H248V337H139V318H54V299H176Z" />
+
                 <g class="mobile-room-labels">
-                  <text x="51" y="143">ПАВ 01</text><text x="247" y="143">ПАВ 03</text>
-                  <text x="51" y="261">РЕКВИЗИТ</text><text x="247" y="261">АППАРАТНАЯ</text>
-                  <text x="51" y="371">ГРИМЁРНЫЕ</text><text x="247" y="371">КАФЕ</text>
+                  <text x="72" y="196">ПАВИЛЬОН 01</text><text x="207" y="196">ПАВИЛЬОН 03</text>
+                  <text x="72" y="332">РЕКВИЗИТ</text><text x="72" y="434">ГРИМЁРНЫЕ</text>
+                  <text x="263" y="332">АППАРАТНАЯ</text><text x="263" y="432">КАФЕ</text>
+                  <text x="132" y="508">ОХРАНА</text><text x="218" y="508">РЕСЕПШЕН</text>
                 </g>
                 <g class="mobile-room-meta">
-                  <text x="51" y="162">СЪЁМОЧНЫЙ</text><text x="247" y="162">СЪЁМОЧНЫЙ</text>
-                  <text x="51" y="280">ХРАНЕНИЕ</text><text x="247" y="280">ТЕХНИКА</text>
-                  <text x="51" y="390">КОМАНДА</text><text x="247" y="390">ОТДЫХ</text>
+                  <text x="72" y="215">СЪЁМОЧНЫЙ</text><text x="207" y="215">СЪЁМОЧНЫЙ</text>
+                  <text x="72" y="350">ХРАНЕНИЕ</text><text x="72" y="452">КОМАНДА</text>
+                  <text x="263" y="350">ТЕХНИКА</text><text x="263" y="450">ОТДЫХ</text>
                 </g>
-                <rect class="mobile-entry" x="113" y="441" width="134" height="51" rx="12" />
-                <text class="mobile-entry-label" x="180" y="472" text-anchor="middle">КПП · ВХОД</text>
-                <text class="mobile-corridor-label" x="180" y="297" text-anchor="middle" transform="rotate(-90 180 297)">ГЛАВНАЯ ГАЛЕРЕЯ</text>
 
-                <polyline id="mobileRoutePath" class="mobile-route-path" points="180,466 180,400 180,266 278,154" />
-                <g id="mobileRouteDots" class="mobile-route-dots">
-                  <circle cx="180" cy="466" r="10" />
-                  <circle cx="180" cy="400" r="10" />
-                  <circle cx="180" cy="266" r="10" />
-                  <circle cx="278" cy="154" r="10" />
+                <g class="mobile-doors">
+                  <path d="M176 281v18M189 281v18M139 329h18M230 329h18M139 430h18M230 430h18M190 477v17M203 477v17" />
                 </g>
-                <g class="mobile-qr-anchor" transform="translate(180 400)">
-                  <rect x="-13" y="-13" width="26" height="26" rx="5" />
+                <text class="mobile-corridor-label" x="193" y="396" text-anchor="middle" transform="rotate(-90 193 396)">ГЛАВНАЯ ГАЛЕРЕЯ</text>
+                <path class="mobile-entrance-path" d="M195 593V550" />
+                <text class="mobile-entry-label" x="195" y="610" text-anchor="middle">ГЛАВНЫЙ ВХОД</text>
+
+                <polyline id="mobileRoutePath" class="mobile-route-path" points="195,566 195,508 195,396 195,309 256,309 256,226" />
+                <g id="mobileRouteDots" class="mobile-route-dots">
+                  <circle cx="195" cy="566" r="9" />
+                  <circle cx="195" cy="508" r="9" />
+                  <circle cx="195" cy="396" r="9" />
+                  <circle cx="256" cy="226" r="9" />
+                </g>
+                <g class="mobile-qr-anchor" transform="translate(195 396)">
+                  <rect x="-12" y="-12" width="24" height="24" rx="5" />
                   <path d="M-6-6h5v5h-5zm8 0h5v5H2zm-8 8h5v5h-5zm8 1h3v3H2z" />
                 </g>
-                <g id="mobileCurrentPin" class="mobile-current-pin" transform="translate(180 466)">
-                  <circle class="mobile-pin-pulse" r="25" />
-                  <circle class="mobile-pin-core" r="17" />
+                <g id="mobileCurrentPin" class="mobile-current-pin" transform="translate(195 566)">
+                  <circle class="mobile-pin-pulse" r="24" />
+                  <circle class="mobile-pin-core" r="16" />
                   <circle class="mobile-pin-dot" r="6" />
                 </g>
-                <g class="mobile-you-are-here" transform="translate(119 513)">
-                  <rect width="122" height="29" rx="14" />
-                  <text x="61" y="19" text-anchor="middle">ВЫ ЗДЕСЬ</text>
+                <g class="mobile-destination-pin" id="mobileDestinationPin" transform="translate(256 226)">
+                  <path d="M0-19c-11 0-19 8-19 19 0 14 19 31 19 31S19 14 19 0C19-11 11-19 0-19Z" />
+                  <circle r="6" />
                 </g>
               </svg>
               <div class="map-legend">
@@ -558,6 +584,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="app.js?v=mobile-map-1"></script>
+    <script src="app.js?v=realistic-mobile-map-1"></script>
   </body>
 </html>
