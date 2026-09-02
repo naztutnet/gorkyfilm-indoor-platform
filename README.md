@@ -8,7 +8,9 @@
 
 ## Опубликованная версия
 
-После создания репозитория GitHub Actions автоматически публикует `main` в GitHub Pages.
+**[Открыть прототип на GitHub Pages](https://naztutnet.github.io/gorkyfilm-indoor-platform/)**
+
+GitHub Actions автоматически публикует каждое обновление ветки `main` в GitHub Pages.
 
 ## Локальный запуск
 
